@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAJ English - Full E-Learning ☀️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap');
+        
+        :root {
+            --bg: #E0F7FA; --card: #FFFFFF; --primary: #00BCD4; --secondary: #FF4081;
+            --success: #4CAF50; --danger: #F44336; --text: #263238; --warning: #FFC107;
+        }
+
+        body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .container { background: var(--card); padding: 30px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); max-width: 650px; width: 100%; border: 3px solid #B2EBF2; position: relative; z-index: 10; max-height: 90vh; overflow-y: auto; }
+        
+        /* Custom Scrollbar */
+        .container::-webkit-scrollbar { width: 8px; }
+        .container::-webkit-scrollbar-thumb { background-color: #B2EBF2; border-radius: 10px; }
+
+        .hidden { display: none !important; }
+        h1 { color: var(--secondary); font-size: 28px; text-align: center; margin-top: 0; }
+        
+        .rules { background: #FFF0F5; padding: 15px; border-radius: 12px; border-left: 5px solid var(--secondary); margin-bottom: 20px; font-size: 15px; color: #455A64; }
+
+        button { display: block; background: var(--primary); color: white; border: none; padding: 15px; margin: 10px 0; border-radius: 12px; cursor: pointer; font-size: 16px; font-weight: 700; width: 100%; position: relative; z-index: 20; transition: transform 0.2s; }
+        button:hover:not(:disabled) { opacity: 0.9; transform: translateY(-2px); }
+        button:disabled { background: #CFD8DC; color: #78909C; cursor: not-allowed; transform: none; }
+        
+        .option-btn { background: #F5F5F5; color: var(--text); border: 2px solid #E0E0E0; text-align: left; }
+        .correct { background: var(--success) !important; color: white !important; border-color: var(--success) !important; }
+        .wrong { background: var(--danger) !important; color: white !important; border-color: var(--danger) !important; }
+
+        .header-bar { display: flex; justify-content: space-between; font-weight: 800; color: #546E7A; margin-bottom: 20px; border-bottom: 2px solid #EEEEEE; padding-bottom: 10px; }
+        #question-text { font-size: 18px; font-weight: 800; margin-bottom: 20px; line-height: 1.5; }
+        
+        #explanation-box { background: #E8F5E9; border-left: 5px solid var(--success); padding: 15px; margin-top: 15px; border-radius: 8px; }
+        #explanation-box h4 { margin: 0 0 5px 0; color: var(--success); font-size: 16px; }
+        #explanation-text { margin: 0; font-size: 15px; line-height: 1.4; color: #37474F; }
+        
+        .score { font-size: 60px; font-weight: 800; color: var(--primary); text-align: center; margin: 10px 0; }
+
+        #btn-materi { background: var(--warning); color: #263238; font-size: 18px; animation: pulse 2s infinite; border: 2px solid #FF9800; }
+        #bonus-1-btn, #bonus-2-btn { background: #9C27B0; animation: pulse 2s infinite; }
+        
+        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.02);} 100% {transform: scale(1);} }
+        
+        .progress-wrapper { width: 100%; height: 10px; background: #EEEEEE; border-radius: 10px; margin-bottom: 20px; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #00BCD4, #FF4081); width: 0%; transition: width 0.3s; border-radius: 10px; }
+
+        /* Materi Screen Styles */
+        .lesson-content { text-align: left; line-height: 1.6; color: #37474F; font-size: 16px; margin-bottom: 25px; }
+        .lesson-content h3 { color: var(--primary); border-bottom: 2px solid #B2EBF2; padding-bottom: 5px; }
+        .lesson-content .example-box { background: #F3E5F5; padding: 12px; border-radius: 8px; border-left: 4px solid #9C27B0; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+    <!-- HOME -->
+    <div id="home-screen" class="container">
+        <h1>✨ Persiapan UAJ English ✨</h1>
+        
+        <button id="btn-materi" onclick="showMateriMenu()">📚 BACA MATERI & CONTOH (NEW)</button>
+        
+        <div class="rules" style="margin-top: 20px;">
+            <strong>Kuis Utama:</strong> Tiap sesi 25 soal. Selesaikan Sesi 1-5 untuk membuka <strong>2 Sesi Bonus</strong> (Ujian Akhir).
+        </div>
+        
+        <div id="main-sessions">
+            <button onclick="startSession(1)">Sesi 1: Expressions</button>
+            <button onclick="startSession(2)" style="background: #03A9F4;">Sesi 2: Grammar & Tenses</button>
+            <button onclick="startSession(3)" style="background: #00BCD4;">Sesi 3: Labels</button>
+            <button onclick="startSession(4)" style="background: #009688;">Sesi 4: Procedure & Descriptive</button>
+            <button onclick="startSession(5)" style="background: #4CAF50;">Sesi 5: Narrative & Report</button>
+        </div>
+
+        <div id="bonus-sessions" class="hidden" style="margin-top: 25px; border-top: 2px dashed #B0BEC5; padding-top: 20px;">
+            <h3 style="text-align: center; margin-top: 0; color: #E91E63;">🔥 Ujian Akhir Terbuka 🔥</h3>
+            <button id="bonus-1-btn" onclick="startSession('bonus1')">BONUS 1 (Full Materi A)</button>
+            <button id="bonus-2-btn" onclick="startSession('bonus2')">BONUS 2 (Full Materi B)</button>
+        </div>
+    </div>
+
+    <!-- MATERI MENU SCREEN -->
+    <div id="materi-menu-screen" class="container hidden">
+        <h1>Pilih Materi Belajar 📖</h1>
+        <button onclick="openLesson(1)" style="background: #00BCD4;">Materi 1: Expressions & Dialogues</button>
+        <button onclick="openLesson(2)" style="background: #03A9F4;">Materi 2: Grammar (Tenses & Modals)</button>
+        <button onclick="openLesson(3)" style="background: #009688;">Materi 3: Labels (Food & Medicine)</button>
+        <button onclick="openLesson(4)" style="background: #4CAF50;">Materi 4: Procedure & Descriptive</button>
+        <button onclick="openLesson(5)" style="background: #8BC34A;">Materi 5: Narrative & Report Text</button>
+        <button onclick="backToHome()" style="background: #9E9E9E; margin-top: 20px;">🔙 Kembali ke Home</button>
+    </div>
+
+    <!-- LESSON TEXT SCREEN -->
+    <div id="lesson-screen" class="container hidden">
+        <h2 id="lesson-title" style="color: var(--secondary); text-align: center;">Materi</h2>
+        <div id="lesson-text" class="lesson-content"></div>
+        
+        <button id="start-materi-quiz-btn" style="background: var(--warning); color: #263238; font-size: 18px; border: 2px solid #FF9800; animation: pulse 2s infinite;" onclick="startMateriQuiz()">✍️ KERJAKAN 3 SOAL LATIHAN</button>
+        <button onclick="backToMateriMenu()" style="background: #9E9E9E;">🔙 Kembali ke Daftar Materi</button>
+    </div>
+
+    <!-- KUIS (Dipakai buat Sesi Utama & Mini Quiz Materi) -->
+    <div id="quiz-screen" class="container hidden">
+        <div class="header-bar">
+            <span id="session-title">Sesi X</span>
+            <span id="question-counter">Soal 1/X</span>
+        </div>
+        <div class="progress-wrapper"><div class="progress-bar" id="progress-bar"></div></div>
+        
+        <div id="question-text"></div>
+        <div id="options-container"></div>
+        
+        <div id="explanation-box" class="hidden">
+            <h4 id="explanation-title">Penjelasan:</h4>
+            <p id="explanation-text"></p>
+        </div>
+        
+        <button id="next-btn" class="hidden" style="background: var(--secondary);" onclick="nextQuestion()">Selanjutnya ➔</button>
+    </div>
+
+    <!-- SKOR -->
+    <div id="score-screen" class="container hidden">
+        <h2 style="text-align: center; color: var(--success); font-size: 30px; margin-bottom: 0;">Selesai!</h2>
+        <div class="score" id="final-score">100</div>
+        <div class="rules" style="text-align: center; background: #E3F2FD; border-color: #03A9F4;">
+            <p id="rest-message" style="margin: 0; font-weight: 800; color: #0288D1;"></p>
+        </div>
+        <button id="score-home-btn" onclick="backToHome()">🏠 Kembali ke Menu</button>
+    </div>
+
+    <script>
+        // TEKS MATERI (TEORI & CONTOH)
+        const lessonData = {
+            1: `<h3>1. Expressions (Ungkapan)</h3>
+                <p>Dalam percakapan bahasa Inggris, kita sering menggunakan ungkapan khusus:</p>
+                <ul>
+                    <li><strong>Congratulating (Memberi Selamat):</strong> Digunakan saat orang lain sukses. <br><div class="example-box"><strong>Contoh:</strong> "Congratulations on your graduation!" (Selamat atas kelulusanmu!)</div></li>
+                    <li><strong>Thanking (Berterima kasih):</strong> <br><div class="example-box"><strong>A:</strong> "Thank you for the gift."<br><strong>B:</strong> "You're welcome / Don't mention it." (Sama-sama)</div></li>
+                    <li><strong>Certainty (Kepastian):</strong> Menyatakan yakin akan sesuatu.<br><div class="example-box"><strong>Contoh:</strong> "I am absolutely sure we will win." (Saya sangat yakin kita akan menang). Jika ragu, katakan: "I doubt it" (Saya ragu).</div></li>
+                </ul>`,
+            2: `<h3>2. Grammar & Tenses</h3>
+                <p>Perhatikan waktu kejadian untuk menentukan pola kalimat (Tenses):</p>
+                <ul>
+                    <li><strong>Present Continuous Tense:</strong> Kejadian yang sedang berlangsung <em>sekarang</em>. <br><div class="example-box"><strong>Rumus:</strong> S + is/am/are + V-ing<br><strong>Contoh:</strong> "Look! The bird <em>is flying</em>." (Lihat! Burungnya sedang terbang).</div></li>
+                    <li><strong>Simple Past Tense:</strong> Kejadian yang <em>sudah selesai</em> di masa lalu (yesterday, last night). <br><div class="example-box"><strong>Rumus:</strong> S + Verb 2<br><strong>Contoh:</strong> "I <em>bought</em> a new car yesterday." (Saya membeli mobil baru kemarin).</div></li>
+                    <li><strong>Modal Can/Could (Kemampuan):</strong> Menyatakan bisa/mampu. <br><div class="example-box"><strong>Contoh:</strong> "Fish <em>can</em> swim." (Ikan bisa berenang). "I <em>could not</em> read when I was a baby." (Bentuk lampau: could).</div></li>
+                </ul>`,
+            3: `<h3>3. Labels (Label Makanan/Obat)</h3>
+                <p>Label berisi informasi penting pada kemasan produk. Istilah penting:</p>
+                <ul>
+                    <li><strong>Keep out of reach of children:</strong> Jauhkan dari jangkauan anak-anak (agar tidak terminum tanpa sengaja).</li>
+                    <li><strong>Expiration Date / Best Before:</strong> Tanggal kedaluwarsa. Produk tidak boleh dikonsumsi setelah tanggal ini.</li>
+                    <li><strong>Dosage:</strong> Dosis atau takaran minum obat. <br><div class="example-box"><strong>Contoh:</strong> "Dosage: 2 tablets daily." (Dosis: 2 tablet setiap hari / per hari).</div></li>
+                    <li><strong>Store in a cool dry place:</strong> Simpan di tempat yang sejuk (misal: kulkas/lemari) dan kering.</li>
+                </ul>`,
+            4: `<h3>4. Procedure & Descriptive Text</h3>
+                <p><strong>A. Procedure Text</strong> (Teks Prosedur): Mengajarkan cara membuat atau melakukan sesuatu.</p>
+                <div class="example-box"><strong>Struktur:</strong> 1. Goal (Tujuan) -> 2. Materials (Bahan/Alat) -> 3. Steps (Langkah-langkah).<br><em>Banyak memakai Action Verb (kata kerja fisik) seperti: cut, stir, boil, pour.</em></div>
+                <p><strong>B. Descriptive Text</strong> (Teks Deskripsi): Menggambarkan ciri-ciri satu objek spesifik (misal: kucingku, kamarku).</p>
+                <div class="example-box"><strong>Struktur:</strong> 1. Identification (Mengenalkan nama/jenis objek) -> 2. Description (Menjelaskan ciri fisik, warna, sifat).</div>`,
+            5: `<h3>5. Narrative & Report Text</h3>
+                <p><strong>A. Narrative Text</strong> (Teks Narasi/Cerita): Cerita fiksi (dongeng, legenda) yang tujuannya <strong>menghibur (to entertain)</strong> dan memberi pesan moral.</p>
+                <div class="example-box"><strong>Struktur:</strong> 1. Orientation (Pengenalan) -> 2. Complication (Muncul Masalah) -> 3. Resolution (Penyelesaian masalah). Memakai Past Tense.</div>
+                <p><strong>B. Report Text</strong> (Teks Laporan): Mendeskripsikan sesuatu secara <strong>ilmiah dan umum</strong> (misal: ciri-ciri Kucing pada umumnya, proses terjadinya Tsunami). Memakai Simple Present Tense.</p>`
+        };
+
+        // DATABASE SOAL (Gabungan Soal Latihan Materi & Soal Utama)
+        const qData = {
+            // SOAL LATIHAN KHUSUS MATERI (3 Soal per Bab)
+            'materi1': [
+                {q:"A: I won the storytelling contest! <br>B: ...", options:["I am sorry","Congratulations!","Thank you","You're welcome"], answer:1, explanation:"Menang lomba harus direspon dengan ucapan selamat (Congratulations!)."},
+                {q:"A: Thank you so much for the gift. <br>B: ...", options:["Don't mention it","I doubt it","I am sorry","Excuse me"], answer:0, explanation:"'Don't mention it' artinya sama-sama. Digunakan untuk membalas ucapan terima kasih."},
+                {q:"A: Are you sure we will pass the exam? <br>B: ... We studied very hard.", options:["I am not sure","Maybe","I doubt it","I am absolutely sure"], answer:3, explanation:"Karena sudah belajar keras, respon yang tepat adalah yakin (absolutely sure)."}
+            ],
+            'materi2': [
+                {q:"Sshh! Be quiet. The baby ... right now.", options:["sleeps","is sleeping","slept","sleeping"], answer:1, explanation:"Kata 'right now' menandakan Present Continuous (is + V-ing)."},
+                {q:"We ... to the museum last week.", options:["go","goes","went","going"], answer:2, explanation:"'Last week' menandakan masa lampau. Verb 2 dari go adalah went."},
+                {q:"A bird is an animal that ... fly in the sky.", options:["cannot","must not","can","should"], answer:2, explanation:"Menyatakan kemampuan burung yaitu bisa (can) terbang."}
+            ],
+            'materi3': [
+                {q:"'Keep out of reach of children' means...", options:["Give to children","Store away from kids","Children must drink","Throw away"], answer:1, explanation:"Artinya jauhkan dari jangkauan anak-anak."},
+                {q:"'Dosage: 1 tablet daily'. How many tablets in a week?", options:["1 tablet","2 tablets","7 tablets","10 tablets"], answer:2, explanation:"Daily = 1 setiap hari. Dalam seminggu (7 hari) berarti butuh 7 tablet."},
+                {q:"If a product label says 'Store in a cool place', you can put it in a...", options:["Oven","Under the sun","Refrigerator (Kulkas)","Hot table"], answer:2, explanation:"Tempat yang sejuk (cool) adalah kulkas/lemari pendingin."}
+            ],
+            'materi4': [
+                {q:"What is the main goal of a Procedure text?", options:["To entertain","To describe a cat","To tell how to make/do something","To report a fact"], answer:2, explanation:"Teks prosedur bertujuan memberitahu cara membuat/melakukan sesuatu."},
+                {q:"'First, chop the garlic.' The word 'chop' is a...", options:["Noun","Sequence word","Action verb","Adjective"], answer:2, explanation:"Chop (mencincang) adalah kata kerja tindakan (action verb)."},
+                {q:"The generic structure of Descriptive Text is...", options:["Orientation - Complication","Goal - Steps","Identification - Description","General Class - Description"], answer:2, explanation:"Struktur deskripsi adalah Identification dan Description."}
+            ],
+            'materi5': [
+                {q:"The purpose of Narrative Text (like Cinderella) is...", options:["To entertain the reader","To make a cake","To report animal facts","To argue"], answer:0, explanation:"Tujuan dongeng/narasi selalu untuk menghibur (to entertain)."},
+                {q:"The problem in a narrative story is called the...", options:["Orientation","Complication","Resolution","Steps"], answer:1, explanation:"Munculnya masalah atau konflik disebut Complication."},
+                {q:"Report text usually uses ... tense because it states general facts.", options:["Simple Past","Future","Past Continuous","Simple Present"], answer:3, explanation:"Fakta ilmiah/kebenaran umum selalu menggunakan Simple Present Tense."}
+            ],
+
+            // SESI UTAMA (125 Soal - Disini gua cantumin sebagian sebagai sampel engine. Masukin soal lu di sini!)
+            1: [ {q:"(Sesi 1) A: Happy birthday! <br>B: ...", options:["Thank you","Sorry","Congratulations","Welcome"], answer:0, explanation:"Diberi ucapan selamat harus bilang terima kasih."} ],
+            2: [ {q:"(Sesi 2) They ... football right now.", options:["play","plays","are playing","played"], answer:2, explanation:"Right now = are playing."} ],
+            3: [ {q:"(Sesi 3) 'Best before Aug 2026' means...", options:["Eat after Aug","Don't eat after Aug","Made in Aug","Cheap"], answer:1, explanation:"Jangan dikonsumsi setelah lewat batas kedaluwarsa."} ],
+            4: [ {q:"(Sesi 4) Title for procedure text?", options:["Malin Kundang","How to Make Tea","My Dog","Volcano"], answer:1, explanation:"Judul 'How to' ciri khas prosedur."} ],
+            5: [ {q:"(Sesi 5) Moral value is found in the...", options:["Orientation","Complication","Resolution","Steps"], answer:2, explanation:"Pesan moral ada di akhir cerita (Resolution)."} ],
+            'bonus1': [ {q:"(Bonus) He ... a letter yesterday.", options:["write","wrote","written","writing"], answer:1, explanation:"Yesterday = verb 2 (wrote)."} ],
+            'bonus2': [ {q:"(Bonus) Narrative text purpose?", options:["Facts","Entertain","Instructions","Describe"], answer:1, explanation:"Tujuan narasi = menghibur."} ]
+        };
+
+        let currentSession = '';
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let correctCount = 0;
+        let completedMainSessions = [];
+        let currentMateriID = 1;
+
+        // FUNGSI NAVIGASI MATERI
+        function showMateriMenu() {
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('materi-menu-screen').classList.remove('hidden');
+        }
+
+        function backToMateriMenu() {
+            document.getElementById('lesson-screen').classList.add('hidden');
+            document.getElementById('materi-menu-screen').classList.remove('hidden');
+        }
+
+        function openLesson(materiID) {
+            currentMateriID = materiID;
+            document.getElementById('materi-menu-screen').classList.add('hidden');
+            document.getElementById('lesson-screen').classList.remove('hidden');
+            
+            document.getElementById('lesson-title').innerText = `Bab ${materiID}`;
+            document.getElementById('lesson-text').innerHTML = lessonData[materiID];
+        }
+
+        function startMateriQuiz() {
+            document.getElementById('lesson-screen').classList.add('hidden');
+            // Mulai kuis dengan array 'materiX' yang isinya 3 soal
+            startSession(`materi${currentMateriID}`);
+        }
+
+        // FUNGSI KUIS UTAMA (Spaced Repetition & Quiz Engine)
+        function backToHome() {
+            document.getElementById('score-screen').classList.add('hidden');
+            document.getElementById('materi-menu-screen').classList.add('hidden');
+            document.getElementById('home-screen').classList.remove('hidden');
+            
+            if (completedMainSessions.length >= 5) {
+                document.getElementById('bonus-sessions').classList.remove('hidden');
+            }
+        }
+
+        function startSession(sessionID) {
+            currentSession = sessionID;
+            currentQuestions = qData[sessionID];
+            currentQuestionIndex = 0;
+            correctCount = 0;
+            
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            
+            // Set judul header (Kalau 'materi1' jadi 'Latihan Materi', kalau '1' jadi 'Sesi 1')
+            let titleStr = "";
+            if(String(sessionID).includes('materi')) titleStr = "Latihan Materi";
+            else if(typeof sessionID === 'number') titleStr = `Sesi ${sessionID}`;
+            else titleStr = "Ujian Akhir";
+            
+            document.getElementById('session-title').innerText = titleStr;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = currentQuestions[currentQuestionIndex];
+            document.getElementById('question-counter').innerText = `Soal ${currentQuestionIndex + 1}/${currentQuestions.length}`;
+            document.getElementById('progress-bar').style.width = ((currentQuestionIndex + 1) / currentQuestions.length) * 100 + '%';
+            
+            document.getElementById('question-text').innerHTML = q.q;
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            document.getElementById('next-btn').classList.add('hidden');
+            document.getElementById('explanation-box').classList.add('hidden');
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `${String.fromCharCode(65 + index)}. ${opt}`;
+                btn.onclick = () => checkAnswer(index, btn, q.answer, q.explanation);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, btnElement, correctIndex, explanationText) {
+            const allButtons = document.querySelectorAll('.option-btn');
+            allButtons.forEach(b => b.disabled = true); 
+
+            const explBox = document.getElementById('explanation-box');
+            const explTitle = document.getElementById('explanation-title');
+
+            if (selectedIndex === correctIndex) {
+                btnElement.classList.add('correct');
+                correctCount++;
+                explBox.style.borderLeftColor = "var(--success)";
+                explTitle.style.color = "var(--success)";
+                explTitle.innerText = "✅ Benar!";
+            } else {
+                btnElement.classList.add('wrong');
+                allButtons[correctIndex].classList.add('correct');
+                explBox.style.borderLeftColor = "var(--danger)";
+                explTitle.style.color = "var(--danger)";
+                explTitle.innerText = "❌ Kurang Tepat!";
+            }
+
+            document.getElementById('explanation-text').innerHTML = explanationText;
+            explBox.classList.remove('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                endSession();
+            }
+        }
+
+        function endSession() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('score-screen').classList.remove('hidden');
+            
+            let finalScore = Math.round((correctCount / currentQuestions.length) * 100);
+            document.getElementById('final-score').innerText = finalScore;
+            
+            let restMsg = "";
+            let btnHome = document.getElementById('score-home-btn');
+            
+            // Logika Evaluasi & Pesan Istirahat
+            if (String(currentSession).includes('materi')) {
+                restMsg = "Latihan Materi selesai! Lanjut baca materi lain atau gas Kuis Utama?";
+                btnHome.innerText = "🔙 Kembali ke Daftar Materi";
+                btnHome.onclick = () => {
+                    document.getElementById('score-screen').classList.add('hidden');
+                    document.getElementById('materi-menu-screen').classList.remove('hidden');
+                };
+            } else {
+                if (typeof currentSession === 'number' && !completedMainSessions.includes(currentSession)) {
+                    completedMainSessions.push(currentSession);
+                }
+                btnHome.innerText = "🏠 Kembali ke Home";
+                btnHome.onclick = backToHome;
+                
+                if(currentSession === 1) restMsg = "Istirahat 2 Jam! Biar otak lu gak nge-lag.";
+                else if(currentSession === 2) restMsg = "Minum dulu, tarik napas, lanjut Sesi 3.";
+                else if(currentSession === 3) restMsg = "TIDUR BANG! Lanjut subuh aja.";
+                else if(currentSession === 4) restMsg = "Subuhan beres? Hajar Sesi 5!";
+                else if(completedMainSessions.length >= 5) restMsg = "MANTAP! 2 Sesi Ujian Akhir Udah Kebuka!";
+            }
+            
+            document.getElementById('rest-message').innerText = restMsg;
+        }
+    </script>
+</body>
+</html>
